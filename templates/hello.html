@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Hello from Flask</title>
+        <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.1.5/ZeroClipboard.min.js"></script>
+        <script>
+            var lexer = "{{ lexer }}"
+            var clip
+            function chooseLexer(element){
+                lexer = element.value
+                $("form#code").prop("action", "?lexer=" + lexer)
+            }
+            $(function(){
+                clip = new ZeroClipboard($("button#copy"))
+                <!--
+                clip.on('aftercopy', function(e){
+                    console.log(e.data)
+                })
+                -->
+                $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true)
+                $("form#code").prop("action", "?lexer=" + lexer)
+            })
+
+        </script>
+        <style>
+            label, input, button {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        {% if name %}
+            <h1>Hello {{ name }}!</h1>
+        {% else %}
+            <h1>Hello World!</h1>
+        {% endif %}
+
+        <form id="lexer">
+            {% for lexer in validLexers %}
+                <label><input type="radio" name="lexer" value="{{ lexer }}" onclick="chooseLexer(this)">{{ lexer }}</label>
+                <br>
+            {% endfor %}
+        </form>
+
+        <form id="code" method="post">
+            Code: <br>
+            <textarea rows=30 cols=100 name="code">{{ code }}</textarea>
+            <input type="submit" value="Submit">
+        </form>
+        <div>
+            <div id="formatted">{{ formatted | safe }}</div>
+            <button id="copy" data-clipboard-target="formatted">Copy</button>
+        </div>
+        <div>
+            <code>{{ formatted }}</code>
+        </div>
+    </body>
+</html>
