@@ -23,6 +23,7 @@
             })
 
         </script>
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
         <style>
             label, input, button {
                 cursor: pointer;
@@ -50,7 +51,7 @@
         </form>
         <div>
             <div id="formatted">{{ formatted | safe }}</div>
-            <button id="copy" data-clipboard-target="formatted">Copy</button>
+            <button id="copy" data-clipboard-target="formatted"><span class="mega-octicon octicon-clippy"></span></button>
         </div>
         <div>
             <code>{{ formatted }}</code>
