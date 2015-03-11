@@ -9,10 +9,6 @@
         <script>
             var lexer = "{{ lexer }}"
             var clip
-            function chooseLexer(element){
-                lexer = element.value
-                $("form#code").prop("action", "?lexer=" + lexer)
-            }
             $(function(){
                 clip = new ZeroClipboard($("button#copy"))
                 <!--
@@ -21,7 +17,6 @@
                 })
                 -->
                 $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true)
-                $("form#code").prop("action", "?lexer=" + lexer)
             })
 
         </script>
@@ -39,21 +34,25 @@
 			{% else %}
 				<h1>Hello World!</h1>
 			{% endif %}
-			<form id="lexer" role="form">
+			<form id="lexer">
 				<div class="radio">
 				{% for lexer in validLexers %}
-					<label><input type="radio" name="lexer" value="{{ lexer }}" onclick="chooseLexer(this)">{{ lexer }}</label>
+					<label><input form="code" type="radio" name="lexer" value="{{ lexer }}">{{ lexer }}</label>
 					<br>
 				{% endfor %}
 				</div>
 			</form>
 			<div class="row">
 				<div class="col-md-6">
-					<form id="code" method="post" role="form">
+					<form id="code" method="post">
 						<h3>Code</h3>
 						<textarea rows=30 name="code" class="form-control">{{ code }}</textarea>
 						<br>
 						<button type="submit" class="btn btn-default">Format</button>
+                        <div class="checkbox pull-right">
+                            <label><input type="checkbox" name="shortcode" value="yes">Get shortcode</label>
+                        </div>
+
 					</form>
 				</div>
 				<div class="col-md-6">
@@ -64,6 +63,10 @@
 				<div class="col-md-6">
 					<h3>HTML</h3>
 					<code>{{ formatted }}</code>
+				</div>
+                <div class="col-md-6">
+					<h3>Link</h3>
+					<div id="shortcode">{{ shortcode }}</div>
 				</div>
 			</div>
 		</div>
