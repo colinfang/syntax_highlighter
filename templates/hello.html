@@ -44,7 +44,7 @@
 			</form>
 			<div class="row">
 				<div class="col-md-6">
-					<form id="code" method="post">
+					<form id="code" method="post" action="/">
 						<h3>Code</h3>
 						<textarea rows=30 name="code" class="form-control">{{ code }}</textarea>
 						<br>
@@ -64,10 +64,12 @@
 					<h3>HTML</h3>
 					<code>{{ formatted }}</code>
 				</div>
+                {% if shortcode > -1 %}
                 <div class="col-md-6">
 					<h3>Link</h3>
-					<div id="shortcode">{{ shortcode }}</div>
+					<div id="shortcode">Your shortcode is <a href="/shortcode/{{ shortcode }}">{{ shortcode }}</a>.</div>
 				</div>
+                {%  endif %}
 			</div>
 		</div>
     </body>
