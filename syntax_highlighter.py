@@ -51,9 +51,15 @@ def format(code, lexer, style):
 
 
 def redis_init(r, n):
+	current_count = r.zcard(REDIS_SHORTCODE)
 	# Do not init again.
-	if r.zcard(REDIS_SHORTCODE) != 0:
+	if current_count == n:
 		return
+	# The sorted set contains different number of items from from we expected.
+	# Maybe due to an update of REDIS_CACHE_N.
+	# Reset it.
+	if current_count > 0:
+		r.flushdb()
 	kwargs = {'{}{}'.format(REDIS_SHORTCODE_PREFIX, i): i for i in range(n)}
 	r.zadd(REDIS_SHORTCODE, **kwargs)
 	r.set(REDIS_SCORE, n)
