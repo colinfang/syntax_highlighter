@@ -2,7 +2,7 @@ __author__ = 'colin'
 
 
 from pygments import highlight
-from pygments.lexers import CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer
+from pygments.lexers import CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer, CppLexer, CLexer, CythonLexer
 from pygments.lexers import BashLexer, BashSessionLexer, PostgresConsoleLexer
 from pygments.formatters import HtmlFormatter
 from flask import Flask, render_template, request, redirect, url_for
@@ -11,8 +11,7 @@ import os
 
 app = Flask(__name__)
 
-LEXER_LIST = [CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer,
-			  BashLexer, BashSessionLexer, PostgresConsoleLexer]
+LEXER_LIST = [CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer, BashLexer, BashSessionLexer, PostgresConsoleLexer, CppLexer, CLexer, CythonLexer]
 LEXER = {x.__name__: x for x in LEXER_LIST}
 
 DEFAULT_LEXER = 'CSharpLexer'
