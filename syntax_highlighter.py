@@ -11,7 +11,25 @@ import os
 
 app = Flask(__name__)
 
-LEXER_LIST = [CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer, BashLexer, BashSessionLexer, PostgresConsoleLexer, CppLexer, CLexer, CythonLexer]
+
+
+LEXER_GROUP = {
+	'No Console': {
+		'Python': [PythonLexer, Python3Lexer, CythonLexer],
+		'NET': [CSharpLexer, FSharpLexer],
+		'R': [SLexer, ],
+		'SQL': [PostgresLexer, SqlLexer],
+		'Shell': [BashLexer],
+		'C': [CppLexer, CLexer],
+	},
+	'Console': {
+		'Python': [PythonConsoleLexer],
+		'R': [RConsoleLexer],
+		'SQL': [PostgresConsoleLexer],
+		'Shell': [BashSessionLexer],
+	},
+}
+LEXER_LIST = [z for x in LEXER_GROUP.values() for y in x.values() for z in y]
 LEXER = {x.__name__: x for x in LEXER_LIST}
 
 DEFAULT_LEXER = 'CSharpLexer'
@@ -116,9 +134,13 @@ def index():
 			shortcode = redis_put(r, code, lexer, formatted)
 		else:
 			shortcode = -1
-		return render_template('hello.html', name='wtfPage', lexer=lexer, formatted=formatted, code=code, validLexers=LEXER.keys(), shortcode=shortcode)
+		return render_template(
+			'hello.html', name='wtfPage', chosen_lexer=lexer, formatted=formatted, code=code,
+			lexer_list=LEXER_LIST, lexer_group=LEXER_GROUP, shortcode=shortcode)
 
-	return render_template('hello.html', name='wtfPage', lexer=lexer, formatted=formatted, code=code, validLexers=LEXER.keys(), shortcode=-1)
+	return render_template(
+		'hello.html', name='wtfPage', chosen_lexer=lexer, formatted=formatted, code=code,
+		lexer_list=LEXER_LIST, lexer_group=LEXER_GROUP, shortcode=-1)
 
 
 @app.route('/shortcode/<int:shortcode>', methods=['GET'])
@@ -130,7 +152,9 @@ def resume(shortcode):
 	v = redis_get(r, shortcode)
 	if v:
 		code, lexer, formatted = v
-		return render_template('hello.html', name='wtfPage', lexer=lexer, formatted=formatted, code=code, validLexers=LEXER.keys(), shortcode=shortcode)
+		return render_template(
+			'hello.html', name='wtfPage', chosen_lexer=lexer, formatted=formatted, code=code,
+			lexer_list=LEXER_LIST, lexer_group=LEXER_GROUP, shortcode=shortcode)
 	return redirect(url_for('index'))
 
 
