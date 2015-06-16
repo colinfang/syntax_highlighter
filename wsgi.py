@@ -14,6 +14,7 @@ except IOError:
 
 from syntax_highlighter import app as application
 
+
 def application2(environ, start_response):
 
     ctype = 'text/plain'

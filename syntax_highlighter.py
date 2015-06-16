@@ -89,7 +89,7 @@ redis_init(r, REDIS_CACHE_N)
 def redis_put(r, code, lexer, formatted):
 	"""
 	It is not thread-safe.
-	Returns an integer.
+	Returns an integer like string.
 	"""
 	shortcode_key = r.zrange(REDIS_SHORTCODE, 0, 0)[0]
 	score = r.incr(REDIS_SCORE)
