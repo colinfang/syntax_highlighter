@@ -10,7 +10,7 @@
         <script>
             var lexer = "{{ chosen_lexer }}"
             var clip
-            $(function(){
+            $(document).ready(function(){
                 clip = new ZeroClipboard($("button#copy"))
                 <!--
                 clip.on('aftercopy', function(e){
@@ -20,6 +20,7 @@
                 $(".lexerButton[value=" + lexer + "]").removeClass("btn-default").addClass("active btn-primary")
                 $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true)
             })
+
             function clickLexerButton(e){
                 var lexer = $(e).prop("value")
                 $(".lexerButton").removeClass("active btn-primary").addClass("btn-default")
