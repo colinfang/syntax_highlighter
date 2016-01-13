@@ -7,5 +7,5 @@ setup(
 	author='Your Name',
 	author_email='example@example.com',
 	url='http://www.python.org/sigs/distutils-sig/',
-	install_requires=['Flask', 'Pygments', 'redis'],
+	install_requires=['Flask', 'Pygments>=2.0', 'redis'],
 )
