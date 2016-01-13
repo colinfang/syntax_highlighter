@@ -3,7 +3,7 @@ __author__ = 'colin'
 
 from pygments import highlight
 from pygments.lexers import CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer, CppLexer, CLexer, CythonLexer
-from pygments.lexers import BashLexer, BashSessionLexer, PostgresConsoleLexer
+from pygments.lexers import BashLexer, BashSessionLexer, PostgresConsoleLexer, JuliaConsoleLexer, JuliaLexer, HtmlLexer
 from pygments.formatters import HtmlFormatter
 from flask import Flask, render_template, request, redirect, url_for
 import redis
@@ -12,21 +12,23 @@ import os
 app = Flask(__name__)
 
 
-
 LEXER_GROUP = {
 	'No Console': {
 		'Python': [PythonLexer, Python3Lexer, CythonLexer],
 		'NET': [CSharpLexer, FSharpLexer],
-		'R': [SLexer, ],
+		'R': [SLexer],
 		'SQL': [PostgresLexer, SqlLexer],
 		'Shell': [BashLexer],
 		'C': [CppLexer, CLexer],
+		'Julia': [JuliaLexer],
+		'HTML': [HtmlLexer],
 	},
 	'Console': {
 		'Python': [PythonConsoleLexer],
 		'R': [RConsoleLexer],
 		'SQL': [PostgresConsoleLexer],
 		'Shell': [BashSessionLexer],
+		'Julia': [JuliaConsoleLexer],
 	},
 }
 LEXER_LIST = [z for x in LEXER_GROUP.values() for y in x.values() for z in y]
