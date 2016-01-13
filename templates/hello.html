@@ -8,24 +8,48 @@
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css" />
         <script>
-            var lexer = "{{ chosen_lexer }}"
-            var clip
+            var lexer = "{{ chosen_lexer }}";
+            var clip;
             $(document).ready(function(){
-                clip = new ZeroClipboard($("button#copy"))
-                <!--
-                clip.on('aftercopy', function(e){
-                    console.log(e.data)
-                })
-                -->
-                $(".lexerButton[value=" + lexer + "]").removeClass("btn-default").addClass("active btn-primary")
-                $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true)
+                clip = new ZeroClipboard($("button#copy"));
+
+                // clip.on('aftercopy', function(e){
+                //     console.log(e.data)
+                // })
+
+                $(".lexerButton[value=" + lexer + "]").removeClass("btn-default").addClass("active btn-primary");
+                $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true);
+                
+                // http://stackoverflow.com/questions/6140632/how-to-handle-tab-in-textarea
+                $("textarea").keydown(function(e) {
+                    if(e.keyCode === 9) { // tab was pressed
+                        // get caret position/selection
+                        var start = this.selectionStart;
+                        var end = this.selectionEnd;
+                
+                        var $this = $(this);
+                        var value = $this.val();
+                
+                        // set textarea value to: text before caret + tab + text after caret
+                        $this.val(value.substring(0, start)
+                                    + "\t"
+                                    + value.substring(end));
+                
+                        // put caret at right position again (add one for the tab)
+                        this.selectionStart = this.selectionEnd = start + 1;
+                
+                        // prevent the focus lose
+                        e.preventDefault();
+                    }
+                });
+
             })
 
             function clickLexerButton(e){
-                var lexer = $(e).prop("value")
-                $(".lexerButton").removeClass("active btn-primary").addClass("btn-default")
-                $(e).removeClass("btn-default").addClass("active btn-primary")
-                $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true)
+                var lexer = $(e).prop("value");
+                $(".lexerButton").removeClass("active btn-primary").addClass("btn-default");
+                $(e).removeClass("btn-default").addClass("active btn-primary");
+                $("input[name='lexer'][value=" + lexer + "]:radio").prop("checked", true);
             }
         </script>
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
