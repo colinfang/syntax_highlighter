@@ -3,7 +3,7 @@ __author__ = 'colin'
 
 from pygments import highlight
 from pygments.lexers import CSharpLexer, FSharpLexer, SLexer, PythonConsoleLexer, RConsoleLexer, PythonLexer, Python3Lexer, PostgresLexer, SqlLexer, CppLexer, CLexer, CythonLexer
-from pygments.lexers import BashLexer, BashSessionLexer, PostgresConsoleLexer, JuliaConsoleLexer, JuliaLexer, HtmlLexer
+from pygments.lexers import BashLexer, BashSessionLexer, PostgresConsoleLexer, JuliaConsoleLexer, JuliaLexer, HtmlLexer, JavascriptLexer
 from pygments.formatters import HtmlFormatter
 from flask import Flask, render_template, request, redirect, url_for
 import redis
@@ -21,7 +21,7 @@ LEXER_GROUP = {
 		'Shell': [BashLexer],
 		'C': [CppLexer, CLexer],
 		'Julia': [JuliaLexer],
-		'HTML': [HtmlLexer],
+		'HTML': [HtmlLexer, JavascriptLexer],
 	},
 	'Console': {
 		'Python': [PythonConsoleLexer],
