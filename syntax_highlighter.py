@@ -11,7 +11,6 @@ import os
 
 app = Flask(__name__)
 
-
 LEXER_GROUP = {
 	'No Console': {
 		'Python': [PythonLexer, Python3Lexer, CythonLexer],
@@ -46,15 +45,7 @@ REDIS_SHORTCODE_PREFIX = 'sc_'
 REDIS_CACHE_N = 1000
 REDIS_SCORE = 'score'
 
-if __name__ == '__main__':
-	pool = redis.ConnectionPool(max_connections=10)
-else:
-	pool = redis.ConnectionPool(
-		max_connections=10,
-		host=os.environ['OPENSHIFT_REDIS_HOST'],
-		port=os.environ['OPENSHIFT_REDIS_PORT'],
-		password=os.environ['REDIS_PASSWORD']
-	)
+POOL = None
 
 
 # Todo: check unicode, since http get returns str:unicode, not sure about form.
@@ -83,9 +74,6 @@ def redis_init(r, n):
 	r.zadd(REDIS_SHORTCODE, **kwargs)
 	r.set(REDIS_SCORE, n)
 
-
-r = redis.StrictRedis(connection_pool=pool)
-redis_init(r, REDIS_CACHE_N)
 
 
 def redis_put(r, code, lexer, formatted):
@@ -132,7 +120,7 @@ def index():
 		need_shortcode = 'need_shortcode' in request.form
 		formatted = format(code, lexer, style)
 		if need_shortcode:
-			r = redis.StrictRedis(connection_pool=pool)
+			r = redis.StrictRedis(connection_pool=POOL)
 			shortcode = redis_put(r, code, lexer, formatted)
 		else:
 			shortcode = -1
@@ -150,7 +138,7 @@ def resume(shortcode):
 	if shortcode < 0 or shortcode >= REDIS_CACHE_N:
 		return redirect(url_for('index'))
 
-	r = redis.StrictRedis(connection_pool=pool)
+	r = redis.StrictRedis(connection_pool=POOL)
 	v = redis_get(r, shortcode)
 	if v:
 		code, lexer, formatted = v
@@ -160,5 +148,27 @@ def resume(shortcode):
 	return redirect(url_for('index'))
 
 
-if __name__ == '__main__':
-	app.run(debug=True)
+def main():
+	global POOL
+
+	if __name__ == '__main__':
+		POOL = redis.ConnectionPool(
+			max_connections=10,
+			host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
+			port=os.environ['REDIS_PORT_6379_TCP_PORT'],
+		)
+	else:
+		POOL = redis.ConnectionPool(
+			max_connections=10,
+			host=os.environ['OPENSHIFT_REDIS_HOST'],
+			port=os.environ['OPENSHIFT_REDIS_PORT'],
+			password=os.environ['REDIS_PASSWORD']
+		)
+
+	r = redis.StrictRedis(connection_pool=POOL)
+	redis_init(r, REDIS_CACHE_N)
+
+	if __name__ == '__main__':
+		app.run(debug=True, host='0.0.0.0')
+
+main()
