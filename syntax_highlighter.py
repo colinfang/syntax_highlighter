@@ -125,11 +125,11 @@ def index():
 		else:
 			shortcode = -1
 		return render_template(
-			'hello.html', name='wtfPage', chosen_lexer=lexer, formatted=formatted, code=code,
+			'hello.html', name='Syntax Highlighter', chosen_lexer=lexer, formatted=formatted, code=code,
 			lexer_list=LEXER_LIST, lexer_group=LEXER_GROUP, shortcode=shortcode)
 
 	return render_template(
-		'hello.html', name='wtfPage', chosen_lexer=lexer, formatted=formatted, code=code,
+		'hello.html', name='Syntax Highlighter', chosen_lexer=lexer, formatted=formatted, code=code,
 		lexer_list=LEXER_LIST, lexer_group=LEXER_GROUP, shortcode=-1)
 
 
@@ -143,7 +143,7 @@ def resume(shortcode):
 	if v:
 		code, lexer, formatted = v
 		return render_template(
-			'hello.html', name='wtfPage', chosen_lexer=lexer, formatted=formatted, code=code,
+			'hello.html', name='Syntax Highlighter', chosen_lexer=lexer, formatted=formatted, code=code,
 			lexer_list=LEXER_LIST, lexer_group=LEXER_GROUP, shortcode=shortcode)
 	return redirect(url_for('index'))
 
